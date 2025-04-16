@@ -39,26 +39,36 @@ const User = require('../models/User');
 // Signup route
 router.post('/signup', async (req, res) => {
   const { name, email, password, address } = req.body;
-  
+
   try {
     // Check if the email is already registered
     const existing = await User.findOne({ email });
     if (existing) {
-      return res.json({ success: false, message: 'Email already registered' });
+      return res.status(400).json({ success: false, message: 'Email already registered' });
     }
-    
-    // Create a new user
-    const newUser = await User.create({ name, email, password, address });
-    
+
+    // Hash the password before saving
+    const hashedPassword = await bcrypt.hash(password, 10);  // 10 is the salt rounds
+
+    // Create a new user with hashed password
+    const newUser = new User({
+      name,
+      email,
+      password: hashedPassword,  // Save hashed password
+      address
+    });
+
+    await newUser.save();  // Save the new user to the database
+
     // Respond with success
-    res.json({ success: true, message: 'User registered successfully' });
-    
+    res.status(201).json({ success: true, message: 'User registered successfully' });
+
   } catch (err) {
-    // Handle errors
-    console.error(err);
-    res.json({ success: false, message: 'Signup failed' });
+    console.error('Error during signup:', err);
+    res.status(500).json({ success: false, message: 'Signup failed, please try again later.' });
   }
 });
+
 
 // Login route
 router.post('/login', async (req, res) => {
