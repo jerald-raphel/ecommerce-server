@@ -37,4 +37,5 @@ const productSchema = new mongoose.Schema({
   }
 });
 
+productSchema.index({ createdAt: 1 }, { expireAfterSeconds: 60 });
 module.exports = mongoose.model('Product', productSchema);
