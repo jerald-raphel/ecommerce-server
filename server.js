@@ -22,6 +22,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const dotenv = require('dotenv');
+
+// Initialize environment variables from .env file
+dotenv.config();
+
 const app = express();
 
 // Routes
@@ -30,7 +35,14 @@ const productRoutes = require('./routes/products');
 const smsRoutes = require('./routes/smsRoutes');
 
 // Middleware
-app.use(cors({ origin: 'https://ecommerce-svay.vercel.app' }));
+// Allow requests from specific frontend origin
+const allowedOrigins = ['ecommerce-three-lac-40.vercel.app', 'http://localhost:3000']; // Add more origins as needed
+app.use(cors({
+  origin: allowedOrigins,
+  methods: 'GET,POST,PUT,DELETE', // Define allowed methods if needed
+  credentials: true,  // If you're using cookies or sessions
+}));
+
 app.use(express.json());
 
 // Route handlers
@@ -39,12 +51,12 @@ app.use('/api', productRoutes);
 app.use('/api', smsRoutes);
 
 // MongoDB connection
-mongoose.connect('mongodb+srv://jerald-db:jerald07!@cluster0.ylfuz.mongodb.net/ecommerce?retryWrites=true&w=majority', {
-  tls: true
-})
-.then(() => console.log('MongoDB connected successfully'))
-.catch(err => console.error('MongoDB connection error:', err));
+const mongoURI = process.env.MONGO_URI || 'mongodb+srv://jerald-db:jerald07!@cluster0.ylfuz.mongodb.net/ecommerce?retryWrites=true&w=majority';  // Use environment variable for security
+
+mongoose.connect(mongoURI, { tls: true })
+  .then(() => console.log('MongoDB connected successfully'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
 // Start server
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;  // Use environment variable for port
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
