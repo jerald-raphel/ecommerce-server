@@ -19,7 +19,6 @@
 // app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 
-
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -31,7 +30,10 @@ const productRoutes = require('./routes/products');
 const smsRoutes = require('./routes/smsRoutes');
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'https://ecommerce-svay.vercel.app/', // 🔁 Replace with your actual Vercel frontend URL
+  credentials: true
+}));
 app.use(express.json());
 
 // Route handlers
@@ -41,7 +43,7 @@ app.use('/api', smsRoutes);
 
 // MongoDB connection
 mongoose.connect('mongodb+srv://jerald-db:jerald07!@cluster0.ylfuz.mongodb.net/ecommerce?retryWrites=true&w=majority', {
-  tls: true // Use TLS explicitly instead of deprecated options
+  tls: true
 })
 .then(() => console.log('MongoDB connected successfully'))
 .catch(err => console.error('MongoDB connection error:', err));
