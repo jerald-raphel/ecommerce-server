@@ -36,7 +36,7 @@ const smsRoutes = require('./routes/smsRoutes');
 
 // Middleware
 // Allow requests from specific frontend origin
-const allowedOrigins = ['ecommerce-three-lac-40.vercel.app', 'http://localhost:3000']; // Add more origins as needed
+const allowedOrigins = ['https://ecommerce-svay.vercel.app', 'http://localhost:3000']; // Make sure to use 'https://' for production frontend URL
 app.use(cors({
   origin: allowedOrigins,
   methods: 'GET,POST,PUT,DELETE', // Define allowed methods if needed
@@ -50,7 +50,7 @@ app.use('/api', authRoutes);
 app.use('/api', productRoutes);
 app.use('/api', smsRoutes);
 
-// MongoDB connection
+// MongoDB connection using environment variable
 const mongoURI = process.env.MONGO_URI || 'mongodb+srv://jerald-db:jerald07!@cluster0.ylfuz.mongodb.net/ecommerce?retryWrites=true&w=majority';  // Use environment variable for security
 
 mongoose.connect(mongoURI, { tls: true })
