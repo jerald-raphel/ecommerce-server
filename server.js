@@ -36,13 +36,11 @@ const smsRoutes = require('./routes/smsRoutes');
 
 // Middleware
 // Allow requests from specific frontend origin
-const allowedOrigins = ['https://ecommerce-svay.vercel.app', 'http://localhost:3000']; // Make sure to use 'https://' for production frontend URL
 app.use(cors({
-  origin: allowedOrigins,
-  methods: 'GET,POST,PUT,DELETE', // Define allowed methods if needed
-  credentials: true,  // If you're using cookies or sessions
+  origin: 'https://ecommerce-svay.vercel.app',  // Vercel frontend URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Allowed HTTP methods
+  credentials: true,
 }));
-
 app.use(express.json());
 
 // Route handlers
