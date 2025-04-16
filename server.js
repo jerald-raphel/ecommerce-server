@@ -32,7 +32,8 @@ const smsRoutes = require('./routes/smsRoutes');
 // Middleware
 app.use(cors({
   origin: 'https://ecommerce-svay.vercel.app/', // 🔁 Replace with your actual Vercel frontend URL
-  credentials: true
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 app.use(express.json());
 
