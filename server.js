@@ -34,14 +34,12 @@ const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/products');
 const smsRoutes = require('./routes/smsRoutes');
 
-// Middleware
-// Allow requests from specific frontend origin
-app.options('*', cors());
+// CORS configuration
 const allowedOrigins = [
   'https://ecommerce-git-master-jeralds-projects-852c57e1.vercel.app',
   'https://ecommerce-mxb7y69yx-jeralds-projects-852c57e1.vercel.app',
   'http://localhost:3000',
-  'https://ecommerce-svay.vercel.app'  // Add any additional Vercel URLs if needed
+  'https://ecommerce-svay.vercel.app',  // Add any additional Vercel URLs if needed
 ];
 
 app.use(cors({
@@ -51,7 +49,7 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'] // Add this to allow custom headers
 }));
 
-
+app.options('*', cors()); // Preflight requests handling
 
 app.use(express.json());
 
