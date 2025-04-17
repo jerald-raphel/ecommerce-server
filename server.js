@@ -18,7 +18,6 @@
 // const PORT = 3000;
 // app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
-
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -34,15 +33,14 @@ const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/products');
 const smsRoutes = require('./routes/smsRoutes');
 
-// ✅ Fixed CORS Configuration
+// CORS Configuration
 const allowedOrigins = [
-  'https://ecommerce-fawn-pi.vercel.app', // Frontend URL (Vercel)
-  'http://localhost:3000',                // Localhost for local testing (adjust port as needed)
+  'https://ecommerce-fawn-pi.vercel.app', // Your Vercel frontend URL
+  'http://localhost:4000',                // Localhost for local development
 ];
 
 const corsOptions = {
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or Postman)
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -50,26 +48,30 @@ const corsOptions = {
     }
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true,  // Ensure cookies are sent if needed (e.g., for sessions)
-  allowedHeaders: ['Content-Type', 'Authorization'], // Ensure headers are accepted
+  credentials: true,
 };
 
-// ✅ Apply middleware
+// Apply CORS middleware
 app.use(cors(corsOptions));
+
+// Middleware to parse JSON data
 app.use(express.json());
 
-// ✅ Route handlers
+// Handle preflight requests (OPTIONS)
+app.options('*', cors(corsOptions));  // Allow all preflight requests
+
+// Route handlers
 app.use('/api', authRoutes);
 app.use('/api', productRoutes);
 app.use('/api', smsRoutes);
 
-// ✅ MongoDB connection using environment variable
+// MongoDB connection using environment variable
 const mongoURI = process.env.MONGO_URI || 'mongodb+srv://jerald-db:jerald07!@cluster0.ylfuz.mongodb.net/ecommerce?retryWrites=true&w=majority';
 
 mongoose.connect(mongoURI, { tls: true })
   .then(() => console.log('MongoDB connected successfully'))
   .catch(err => console.error('MongoDB connection error:', err));
 
-// ✅ Start server
+// Start the server
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
