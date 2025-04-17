@@ -36,11 +36,18 @@ const smsRoutes = require('./routes/smsRoutes');
 
 // Middleware
 // Allow requests from specific frontend origin
+const allowedOrigins = [
+  'https://ecommerce-three-lac-40.vercel.app',
+  'http://localhost:3000'
+];
+
 app.use(cors({
-  origin: 'https://ecommerce-three-lac-40.vercel.app/',  // Vercel frontend URL
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Allowed HTTP methods
-  credentials: true,
+  origin: allowedOrigins,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
 }));
+
+
 app.use(express.json());
 
 // Route handlers
