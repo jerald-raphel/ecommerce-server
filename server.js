@@ -36,8 +36,8 @@ const smsRoutes = require('./routes/smsRoutes');
 
 // CORS configuration
 const allowedOrigins = [
-  'https://ecommerce-fawn-pi.vercel.app/', // Vercel frontend URL
-  'http://localhost:3000',                    // Localhost for local testing
+  'https://ecommerce-fawn-pi.vercel.app', // Vercel frontend URL
+  'http://localhost:4000',                    // Localhost for local testing
 ];
 
 
@@ -66,5 +66,5 @@ mongoose.connect(mongoURI, { tls: true })
   .catch(err => console.error('MongoDB connection error:', err));
 
 // Start server
-const PORT = process.env.PORT || 3000;  // Use environment variable for port
+const PORT = process.env.PORT || 4000;  // Use environment variable for port
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
