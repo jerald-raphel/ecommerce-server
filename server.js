@@ -34,37 +34,40 @@ const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/products');
 const smsRoutes = require('./routes/smsRoutes');
 
-// CORS configuration
+// ✅ Fixed CORS Configuration
 const allowedOrigins = [
-  'https://ecommerce-fawn-pi.vercel.app', // Vercel frontend URL
-  'http://localhost:4000',                    // Localhost for local testing
+  'https://ecommerce-fawn-pi.vercel.app', // ✅ No trailing slash
+  'http://localhost:4000',                // Localhost for local testing
 ];
 
-
 const corsOptions = {
-  origin: allowedOrigins,
-  methods: 'GET,POST,PUT,DELETE',
-  credentials: true, // If you're using cookies or sessions
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
 };
 
-app.use(cors(corsOptions));  // Apply CORS middleware globally
- // Preflight requests handling
- app.options('*', cors()); // Allow preflight requests for all routes
-
+// ✅ Apply middleware
+app.use(cors(corsOptions));
 app.use(express.json());
 
-// Route handlers
+// ✅ Route handlers
 app.use('/api', authRoutes);
 app.use('/api', productRoutes);
 app.use('/api', smsRoutes);
 
-// MongoDB connection using environment variable
-const mongoURI = process.env.MONGO_URI || 'mongodb+srv://jerald-db:jerald07!@cluster0.ylfuz.mongodb.net/ecommerce?retryWrites=true&w=majority';  // Use environment variable for security
+// ✅ MongoDB connection using environment variable
+const mongoURI = process.env.MONGO_URI || 'mongodb+srv://jerald-db:jerald07!@cluster0.ylfuz.mongodb.net/ecommerce?retryWrites=true&w=majority';
 
 mongoose.connect(mongoURI, { tls: true })
   .then(() => console.log('MongoDB connected successfully'))
   .catch(err => console.error('MongoDB connection error:', err));
 
-// Start server
-const PORT = process.env.PORT || 4000;  // Use environment variable for port
+// ✅ Start server
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
