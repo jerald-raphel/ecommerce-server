@@ -23,7 +23,6 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 
-// Initialize environment variables from .env file
 dotenv.config();
 
 const app = express();
@@ -33,10 +32,10 @@ const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/products');
 const smsRoutes = require('./routes/smsRoutes');
 
-// CORS Configuration
+// ✅ CORS Configuration
 const allowedOrigins = [
-  'https://ecommerce-fawn-pi.vercel.app', // Your Vercel frontend URL
-  'http://localhost:4000',                // Localhost for local development
+  'https://ecommerce-fawn-pi.vercel.app',  // Your Vercel frontend URL
+  'http://localhost:4000',                 // Localhost for local testing
 ];
 
 const corsOptions = {
@@ -48,30 +47,26 @@ const corsOptions = {
     }
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'], // If you need Authorization headers or others
   credentials: true,
 };
 
-// Apply CORS middleware
+// ✅ Apply middleware
 app.use(cors(corsOptions));
-
-// Middleware to parse JSON data
 app.use(express.json());
 
-// Handle preflight requests (OPTIONS)
-app.options('*', cors(corsOptions));  // Allow all preflight requests
-
-// Route handlers
+// ✅ Route handlers
 app.use('/api', authRoutes);
 app.use('/api', productRoutes);
 app.use('/api', smsRoutes);
 
-// MongoDB connection using environment variable
+// ✅ MongoDB connection using environment variable
 const mongoURI = process.env.MONGO_URI || 'mongodb+srv://jerald-db:jerald07!@cluster0.ylfuz.mongodb.net/ecommerce?retryWrites=true&w=majority';
 
 mongoose.connect(mongoURI, { tls: true })
   .then(() => console.log('MongoDB connected successfully'))
   .catch(err => console.error('MongoDB connection error:', err));
 
-// Start the server
+// ✅ Start server
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
