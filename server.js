@@ -36,13 +36,13 @@ const smsRoutes = require('./routes/smsRoutes');
 
 // ✅ Fixed CORS Configuration
 const allowedOrigins = [
-  'https://ecommerce-fawn-pi.vercel.app', // Frontend production URL
-  'http://localhost:4000',                // Localhost for local testing
+  'https://ecommerce-fawn-pi.vercel.app', // Frontend URL (Vercel)
+  'http://localhost:3000',                // Localhost for local testing (adjust port as needed)
 ];
 
 const corsOptions = {
   origin: function (origin, callback) {
-    // Allow requests from the allowed origins or no origin (for Postman/Thunder Client)
+    // Allow requests with no origin (like mobile apps or Postman)
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -50,8 +50,8 @@ const corsOptions = {
     }
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true,  // If you are using cookies or sessions
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,  // Ensure cookies are sent if needed (e.g., for sessions)
+  allowedHeaders: ['Content-Type', 'Authorization'], // Ensure headers are accepted
 };
 
 // ✅ Apply middleware
@@ -69,9 +69,6 @@ const mongoURI = process.env.MONGO_URI || 'mongodb+srv://jerald-db:jerald07!@clu
 mongoose.connect(mongoURI, { tls: true })
   .then(() => console.log('MongoDB connected successfully'))
   .catch(err => console.error('MongoDB connection error:', err));
-
-// ✅ Preflight handling for CORS
-app.options('*', cors(corsOptions));  // Allow preflight requests for all routes
 
 // ✅ Start server
 const PORT = process.env.PORT || 4000;
