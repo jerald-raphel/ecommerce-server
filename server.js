@@ -39,14 +39,17 @@ const smsRoutes = require('./routes/smsRoutes');
 const allowedOrigins = [
   'https://ecommerce-git-master-jeralds-projects-852c57e1.vercel.app',
   'https://ecommerce-mxb7y69yx-jeralds-projects-852c57e1.vercel.app',
-  'http://localhost:3000'
+  'http://localhost:3000',
+  'https://ecommerce-svay.vercel.app'  // Add any additional Vercel URLs if needed
 ];
 
 app.use(cors({
   origin: allowedOrigins,
   methods: 'GET,POST,PUT,DELETE',
-  credentials: true
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization'] // Add this to allow custom headers
 }));
+
 
 
 app.use(express.json());
