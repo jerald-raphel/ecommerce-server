@@ -34,9 +34,10 @@ const smsRoutes = require('./routes/smsRoutes');
 
 // ✅ CORS Configuration
 const allowedOrigins = [
-  'ecommerce-mu-red-58.vercel.app',  // Your Vercel frontend URL
-  'http://localhost:4000',                 // Localhost for local testing
+  'https://ecommerce-mu-red-58.vercel.app',
+  'http://localhost:4000',
 ];
+
 
 const corsOptions = {
   origin: function (origin, callback) {
