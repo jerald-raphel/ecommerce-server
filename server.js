@@ -34,7 +34,7 @@ const smsRoutes = require('./routes/smsRoutes');
 
 // ✅ CORS Configuration
 const allowedOrigins = [
-  'https://ecommerce-fawn-pi.vercel.app',  // Your Vercel frontend URL
+  'ecommerce-mu-red-58.vercel.app',  // Your Vercel frontend URL
   'http://localhost:4000',                 // Localhost for local testing
 ];
 
